@@ -1,0 +1,23 @@
+#!/bin/bash
+_zenity="/usr/bin/zenity"
+_out="/tmp/search.output.$$"
+searche=$(${_zenity} --title  "Package Searcher" \
+	--entry --text "Enter the package name")
+
+if [ $? -eq 0 ]
+then
+	aptitude search $searche |tee >(${_zenity} --width 200 --height 100 \
+		--title="Packages" --progress \
+		--pulsate --text="Searching for packages ..." \
+		--auto-kill --auto-close \
+		--percentage=10) > ${_out}
+
+	${_zenity} --width=800 --height=600 \
+		--title "Search results for $searche" \
+		--text-info --filename="${_out}"
+
+else
+	${_zenity} --error \
+		--text="No input provided"
+fi
+
