@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# A small program that gets the PID of the window you click on
+# and Sends the PID through notify-send on to the screen
+# @xerolag
+XPID=$(xprop _NET_WM_PID | cut -d' ' -f3)
+
+notify-send -u critical $XPID
